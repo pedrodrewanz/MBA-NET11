@@ -9,10 +9,10 @@ namespace Fiap.MasterChef.Repository.Mapping
         {
             _model.Entity<CategoriaModel>(etd =>
             {
-                etd.ToTable("tbCategoria");
+                etd.ToTable("Categoria");
                 etd.HasKey(c => c.Id).HasName("ID");
-                etd.Property(c => c.Id).HasColumnName("ID").ValueGeneratedOnAdd();
-                etd.Property(c => c.Nome).HasColumnName("nome").HasMaxLength(100);               
+                etd.Property(c => c.Id).UseSqlServerIdentityColumn();
+                etd.Property(c => c.Nome).HasColumnName("Nome").HasMaxLength(100);
             });
         }
     }

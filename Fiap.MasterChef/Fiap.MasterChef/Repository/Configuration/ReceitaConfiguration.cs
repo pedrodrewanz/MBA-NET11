@@ -13,10 +13,10 @@ namespace Fiap.MasterChef.Repository.Mapping
         {
             _model.Entity<ReceitaModel>(etd =>
             {
-                etd.ToTable("tbReceita");
+                etd.ToTable("Receita");
                 etd.HasKey(p => p.Id).HasName("ID");
-                etd.Property(p => p.Id).HasColumnName("ID").ValueGeneratedOnAdd();
-                etd.Property(p => p.Titulo).HasColumnName("DS_TITULO").HasMaxLength(100);
+                etd.Property(p => p.Id).UseSqlServerIdentityColumn();
+                etd.Property(p => p.Titulo).HasColumnName("Titulo").HasMaxLength(100);
                 etd.HasOne(c => c.Categoria).WithMany(p => p.Receitas);
             });
         }
