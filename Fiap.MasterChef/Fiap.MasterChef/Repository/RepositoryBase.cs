@@ -10,7 +10,7 @@ namespace Fiap.MasterChef.Repository
 {
     public class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
     {
-        protected MasterChefContext Db = new MasterChefContext();
+        protected MasterChefContext Db;
 
         public void Add(TEntity obj)
         {

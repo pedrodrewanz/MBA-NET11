@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Fiap.MasterChef.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fiap.MasterChef
 {
@@ -28,6 +30,10 @@ namespace Fiap.MasterChef
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=MasterChefDB;Trusted_Connection=True;";
+            services.AddDbContext<MasterChefContext>(options => options.UseSqlServer(connection));
+
+            
             services.AddMvc();
         }
 
