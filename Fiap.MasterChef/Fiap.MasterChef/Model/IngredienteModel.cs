@@ -11,7 +11,7 @@ namespace Fiap.MasterChef.Model
 
         public decimal Quantidade { get; set; }
 
-        public TipoMedida TipoMedida { get; set; }
+        public string TipoMedida { get; set; }
 
         public string Nome { get; set; }
     }

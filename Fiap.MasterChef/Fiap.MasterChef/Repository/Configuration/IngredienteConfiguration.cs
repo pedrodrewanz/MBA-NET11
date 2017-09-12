@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Fiap.MasterChef.Repository.Configuration
+namespace Fiap.MasterChef.Repository.Mapping
 {
     public class IngredienteConfiguration
     {
@@ -16,7 +16,6 @@ namespace Fiap.MasterChef.Repository.Configuration
                 e.ToTable("Ingrediente");
                 e.Property(c => c.ID).UseSqlServerIdentityColumn();
                 e.HasKey(c => c.ID).HasName("ID");
-                e.HasOne("Receita").WithMany("Ingredientes").HasForeignKey("ReceitaID");
                 e.Property(p => p.Quantidade).HasColumnName("Quantidade").ForSqlServerHasColumnType("SMALLINT");
                 e.Property(p => p.TipoMedida).HasColumnName("TipoMedida");
                 e.Property(p => p.Nome).HasColumnName("Nome").HasMaxLength(100);

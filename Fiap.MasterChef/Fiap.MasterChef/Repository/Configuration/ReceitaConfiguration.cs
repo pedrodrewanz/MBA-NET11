@@ -17,7 +17,10 @@ namespace Fiap.MasterChef.Repository.Mapping
                 etd.HasKey(p => p.Id).HasName("ID");
                 etd.Property(p => p.Id).UseSqlServerIdentityColumn();
                 etd.Property(p => p.Titulo).HasColumnName("Titulo").HasMaxLength(100);
-                etd.HasOne(c => c.Categoria).WithMany(p => p.Receitas);
+                etd.Property(p => p.Descricao).HasColumnName("Descricao").HasMaxLength(300);
+                etd.Property(p => p.ModoPreparo).HasColumnName("ModoPreparo");
+                etd.HasOne(c => c.Categoria).WithMany(p => p.Receitas).HasForeignKey("CategoriaID");
+                etd.HasMany<IngredienteModel>(r => r.Ingredientes).WithOne().HasForeignKey("ReceitaID");
             });
         }
     }

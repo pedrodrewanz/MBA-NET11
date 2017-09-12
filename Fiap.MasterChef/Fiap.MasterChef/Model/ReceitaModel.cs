@@ -11,8 +11,12 @@ namespace Fiap.MasterChef.Model
 
         public String Titulo { get; set; }
 
-        public Int32 IdCategoria { get; set; }
-
         public virtual CategoriaModel Categoria { get; set; }
+
+        public String Descricao { get; set; }
+
+        public List<IngredienteModel> Ingredientes { get; set; }
+
+        public string ModoPreparo { get; set; }
     }
 }
