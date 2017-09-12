@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fiap.MasterChef.Repository
 {
-    public class MasterChefContext :    DbContext
+    public class MasterChefContext : DbContext
     {
-        public MasterChefContext() :base() {}
+        public MasterChefContext() : base() { }
 
-        public MasterChefContext(DbContextOptions<MasterChefContext> opcoes):base(opcoes){ }
+        public MasterChefContext(DbContextOptions<MasterChefContext> opcoes) : base(opcoes) { }
 
         public DbSet<CategoriaModel> Categorias { get; set; }
 
