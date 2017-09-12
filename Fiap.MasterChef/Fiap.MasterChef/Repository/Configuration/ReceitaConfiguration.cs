@@ -14,8 +14,8 @@ namespace Fiap.MasterChef.Repository.Mapping
             _model.Entity<ReceitaModel>(etd =>
             {
                 etd.ToTable("Receita");
-                etd.HasKey(p => p.Id).HasName("ID");
-                etd.Property(p => p.Id).UseSqlServerIdentityColumn();
+                etd.HasKey(p => p.Id);
+                etd.Property(p => p.Id).HasColumnName("ID").UseSqlServerIdentityColumn();
                 etd.Property(p => p.Titulo).HasColumnName("Titulo").HasMaxLength(100);
                 etd.Property(p => p.Descricao).HasColumnName("Descricao").HasMaxLength(300);
                 etd.Property(p => p.ModoPreparo).HasColumnName("ModoPreparo");
