@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fiap.MasterChef.Repository.Interface
 {
-    public interface IReceitaRepository
+    public interface IReceitaRepository : IRepositoryBase<ReceitaModel>
     {
-        void Salvar(ReceitaModel receita);
-        void Deletar(Int32 id);
-        void Editar(ReceitaModel receita);
-        List<ReceitaModel> BuscarTodos();
-        ReceitaModel Buscar();
+
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fiap.MasterChef.Repository.Interface
 {
-    public interface ICategoriaRepository : IRepositoryBase<CategoriaModel>
+    public interface IIngredienteRepository : IRepositoryBase<IngredienteModel>
     {
-
     }
 }
