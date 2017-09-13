@@ -27,9 +27,15 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="Categoria.Id" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Categoria.Id" asp-items='new SelectList(ViewBag.Categorias, "Id", "Nome")'></select>
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="ModoPreparo" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="ModoPreparo" class="form-control" />
+                <textarea asp-for="ModoPreparo" class="form-control"></textarea>
                 <span asp-validation-for="ModoPreparo" class="text-danger"></span>
             </div>
         </div>

@@ -13,14 +13,35 @@ namespace Fiap.MasterChef.Repository.Mapping
         {
             _model.Entity<ReceitaModel>(etd =>
             {
-                etd.ToTable("Receita");
-                etd.HasKey(p => p.Id);
-                etd.Property(p => p.Id).HasColumnName("ID").UseSqlServerIdentityColumn();
-                etd.Property(p => p.Titulo).HasColumnName("Titulo").HasMaxLength(100);
-                etd.Property(p => p.Descricao).HasColumnName("Descricao").HasMaxLength(300);
-                etd.Property(p => p.ModoPreparo).HasColumnName("ModoPreparo");
-                etd.HasOne(c => c.Categoria).WithMany(p => p.Receitas).HasForeignKey("CategoriaID");
-                etd.HasMany<IngredienteModel>(r => r.Ingredientes).WithOne().HasForeignKey("ReceitaID");
+                etd.ToTable("Receita")
+                   .HasKey(p => p.Id);
+
+                etd.Property(p => p.Id)
+                   .HasColumnName("ID")
+                   .UseSqlServerIdentityColumn();
+
+                etd.Property(p => p.Titulo)
+                   .HasColumnName("Titulo")
+                   .HasMaxLength(100)
+                   .IsRequired();
+
+                etd.Property(p => p.Descricao)
+                   .HasColumnName("Descricao")
+                   .HasMaxLength(300)
+                   .IsRequired();
+
+                etd.Property(p => p.ModoPreparo)
+                   .HasColumnName("ModoPreparo")
+                   .IsRequired();
+
+                etd.HasOne(c => c.Categoria)
+                   .WithMany(p => p.Receitas)
+                   .HasForeignKey("CategoriaID")
+                   .IsRequired();
+
+                etd.HasMany(r => r.Ingredientes)
+                   .WithOne()
+                   .HasForeignKey("ReceitaID");
             });
         }
     }

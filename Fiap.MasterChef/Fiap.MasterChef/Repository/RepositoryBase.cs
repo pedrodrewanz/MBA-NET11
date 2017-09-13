@@ -12,6 +12,11 @@ namespace Fiap.MasterChef.Repository
     {
         protected MasterChefContext Db;
 
+        public RepositoryBase(MasterChefContext db)
+        {
+            Db = db;
+        }
+
         public void Add(TEntity obj)
         {
             Db.Set<TEntity>().Add(obj);
@@ -23,7 +28,7 @@ namespace Fiap.MasterChef.Repository
         }
         public IEnumerable<TEntity> GetAll()
         {
-            return Db.Set<TEntity>().ToList();
+            return Db.Set<TEntity>();
         }
         public void Update(TEntity obj)
         {

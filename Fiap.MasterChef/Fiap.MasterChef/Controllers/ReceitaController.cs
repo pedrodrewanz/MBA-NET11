@@ -1,40 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Fiap.MasterChef.Model;
-using Fiap.MasterChef.Repository;
+using Fiap.MasterChef.Repository.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Fiap.MasterChef.Controllers
 {
     public class ReceitaController : Controller
     {
-        private readonly MasterChefContext _context;
+        private readonly IReceitaRepository repository;
+        private readonly ICategoriaRepository categoriaRepository;
 
-        public ReceitaController(MasterChefContext context)
+        public ReceitaController(IReceitaRepository repository, ICategoriaRepository categoriaRepository)
         {
-            _context = context;    
+            this.repository = repository;
+            this.categoriaRepository = categoriaRepository;
         }
 
         // GET: Receita
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Receitas.ToListAsync());
+            return View(repository.GetAll());
         }
 
         // GET: Receita/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var receitaModel = await _context.Receitas
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var receitaModel = repository.GetById(id.Value);
             if (receitaModel == null)
             {
                 return NotFound();
@@ -46,6 +43,7 @@ namespace Fiap.MasterChef.Controllers
         // GET: Receita/Create
         public IActionResult Create()
         {
+            ViewBag.Categorias = categoriaRepository.GetAll().ToList();
             return View();
         }
 
@@ -54,26 +52,28 @@ namespace Fiap.MasterChef.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descricao,ModoPreparo")] ReceitaModel receitaModel)
+        public IActionResult Create(ReceitaModel receitaModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(receitaModel);
-                await _context.SaveChangesAsync();
+                receitaModel.Categoria = categoriaRepository.GetById(receitaModel.Categoria.Id);
+                repository.Add(receitaModel);
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Categorias = categoriaRepository.GetAll().ToList();
             return View(receitaModel);
         }
 
         // GET: Receita/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var receitaModel = await _context.Receitas.SingleOrDefaultAsync(m => m.Id == id);
+            var receitaModel = repository.GetById(id.Value);
             if (receitaModel == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace Fiap.MasterChef.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,ModoPreparo")] ReceitaModel receitaModel)
+        public IActionResult Edit(int id, [Bind("Id,Titulo,Descricao,ModoPreparo")] ReceitaModel receitaModel)
         {
             if (id != receitaModel.Id)
             {
@@ -97,8 +97,7 @@ namespace Fiap.MasterChef.Controllers
             {
                 try
                 {
-                    _context.Update(receitaModel);
-                    await _context.SaveChangesAsync();
+                    repository.Update(receitaModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +116,14 @@ namespace Fiap.MasterChef.Controllers
         }
 
         // GET: Receita/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var receitaModel = await _context.Receitas
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var receitaModel = repository.GetById(id.Value);
             if (receitaModel == null)
             {
                 return NotFound();
@@ -137,17 +135,16 @@ namespace Fiap.MasterChef.Controllers
         // POST: Receita/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var receitaModel = await _context.Receitas.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Receitas.Remove(receitaModel);
-            await _context.SaveChangesAsync();
+            var receitaModel = repository.GetById(id);
+            repository.Remove(receitaModel);
             return RedirectToAction("Index");
         }
 
         private bool ReceitaModelExists(int id)
         {
-            return _context.Receitas.Any(e => e.Id == id);
+            return repository.GetAll().Any(r => r.Id == id);
         }
     }
 }

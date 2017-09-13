@@ -12,5 +12,10 @@ namespace Fiap.MasterChef.Model
         public String Nome { get; set; }
 
         public virtual ICollection<ReceitaModel> Receitas { get; set; }
+
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

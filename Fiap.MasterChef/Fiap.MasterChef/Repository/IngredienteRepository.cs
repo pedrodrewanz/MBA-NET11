@@ -9,5 +9,9 @@ namespace Fiap.MasterChef.Repository
 {
     public class IngredienteRepository : RepositoryBase<IngredienteModel>, IIngredienteRepository
     {
+        public IngredienteRepository(MasterChefContext context):base(context)
+        {
+
+        }
     }
 }

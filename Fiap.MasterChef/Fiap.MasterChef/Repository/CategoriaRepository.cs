@@ -9,5 +9,9 @@ namespace Fiap.MasterChef.Repository
 {
     public class CategoriaRepository : RepositoryBase<CategoriaModel>, ICategoriaRepository
     {
+        public CategoriaRepository(MasterChefContext context):base(context)
+        {
+
+        }
     }
 }

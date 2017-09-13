@@ -8,9 +8,10 @@ using Fiap.MasterChef.Repository;
 namespace Fiap.MasterChef.Migrations
 {
     [DbContext(typeof(MasterChefContext))]
-    partial class MasterChefContextModelSnapshot : ModelSnapshot
+    [Migration("20170913010341_CamposObrigatorios")]
+    partial class CamposObrigatorios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("MasterChef")

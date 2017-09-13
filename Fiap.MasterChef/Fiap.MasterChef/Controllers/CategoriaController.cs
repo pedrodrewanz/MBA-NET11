@@ -1,40 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Fiap.MasterChef.Model;
-using Fiap.MasterChef.Repository;
+using Fiap.MasterChef.Repository.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Fiap.MasterChef.Controllers
 {
     public class CategoriaController : Controller
     {
-        private readonly MasterChefContext _context;
+        private readonly ICategoriaRepository repositorio;
 
-        public CategoriaController(MasterChefContext context)
+        public CategoriaController(ICategoriaRepository repositorio)
         {
-            _context = context;    
+            this.repositorio = repositorio;
         }
 
         // GET: Categoria
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Categorias.ToListAsync());
+            return View(repositorio.GetAll());
         }
 
         // GET: Categoria/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var categoriaModel = await _context.Categorias
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var categoriaModel = repositorio.GetById(id.Value);
             if (categoriaModel == null)
             {
                 return NotFound();
@@ -54,26 +49,25 @@ namespace Fiap.MasterChef.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome")] CategoriaModel categoriaModel)
+        public IActionResult Create([Bind("Id,Nome")] CategoriaModel categoriaModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoriaModel);
-                await _context.SaveChangesAsync();
+                repositorio.Add(categoriaModel);
                 return RedirectToAction("Index");
             }
             return View(categoriaModel);
         }
 
         // GET: Categoria/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var categoriaModel = await _context.Categorias.SingleOrDefaultAsync(m => m.Id == id);
+            var categoriaModel = repositorio.GetById(id.Value);
             if (categoriaModel == null)
             {
                 return NotFound();
@@ -86,7 +80,7 @@ namespace Fiap.MasterChef.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] CategoriaModel categoriaModel)
+        public IActionResult Edit(int id, [Bind("Id,Nome")] CategoriaModel categoriaModel)
         {
             if (id != categoriaModel.Id)
             {
@@ -97,8 +91,7 @@ namespace Fiap.MasterChef.Controllers
             {
                 try
                 {
-                    _context.Update(categoriaModel);
-                    await _context.SaveChangesAsync();
+                    repositorio.Update(categoriaModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +110,14 @@ namespace Fiap.MasterChef.Controllers
         }
 
         // GET: Categoria/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var categoriaModel = await _context.Categorias
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var categoriaModel = repositorio.GetById(id.Value);
             if (categoriaModel == null)
             {
                 return NotFound();
@@ -137,17 +129,17 @@ namespace Fiap.MasterChef.Controllers
         // POST: Categoria/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var categoriaModel = await _context.Categorias.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Categorias.Remove(categoriaModel);
-            await _context.SaveChangesAsync();
+            var categoriaModel = repositorio.GetById(id);
+
+            repositorio.Remove(categoriaModel);
             return RedirectToAction("Index");
         }
 
         private bool CategoriaModelExists(int id)
         {
-            return _context.Categorias.Any(e => e.Id == id);
+            return repositorio.GetAll().Any(c => c.Id == id);
         }
     }
 }

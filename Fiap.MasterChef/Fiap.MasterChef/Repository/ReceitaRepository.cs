@@ -9,5 +9,10 @@ namespace Fiap.MasterChef.Repository
 {
     public class ReceitaRepository : RepositoryBase<ReceitaModel>, IReceitaRepository
     {
+
+        public ReceitaRepository(MasterChefContext context):base(context)
+        {
+
+        }
     }
 }
